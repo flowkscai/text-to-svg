@@ -42,6 +42,18 @@ export default class TextToSVG {
     }, opt);
   }
 
+  static loadAsync(url, opt) {
+    return new Promise((resolve, reject) => {
+      this.load(url, opt, (err, font) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(font);
+      });
+    });
+  }
+
   getWidth(text, options) {
     const fontSize = options.fontSize || 72;
     const kerning = 'kerning' in options ? options.kerning : true;
