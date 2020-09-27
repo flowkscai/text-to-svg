@@ -23,18 +23,23 @@ export default class TextToSVG {
     this.font = font;
   }
 
-  static loadSync(file = DEFAULT_FONT) {
-    return new TextToSVG(opentype.loadSync(file));
+  static loadSync(file = DEFAULT_FONT, opt) {
+    return new TextToSVG(opentype.loadSync(file, opt));
   }
 
-  static load(url, cb) {
+  static load(url, opt, cb) {
+    if (typeof opt === 'function') {
+      cb = opt;
+      opt = null;
+    }
+
     opentype.load(url, (err, font) => {
       if (err !== null) {
         return cb(err, null);
       }
 
       return cb(null, new TextToSVG(font));
-    });
+    }, opt);
   }
 
   getWidth(text, options) {
